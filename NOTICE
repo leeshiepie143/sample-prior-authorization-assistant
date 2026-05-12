@@ -1,0 +1,35 @@
+Prior Authorization Assistant
+Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the MIT No Attribution (MIT-0) license.
+
+This project includes the following third-party software/libraries:
+
+Python Dependencies
+-------------------
+- boto3 (https://github.com/boto/boto3) - Apache License 2.0
+- pydantic (https://github.com/pydantic/pydantic) - MIT License
+- dataclasses-json (https://github.com/lidatong/dataclasses-json) - MIT License
+- structlog (https://github.com/hynek/structlog) - Apache License 2.0 / MIT License
+- python-dateutil (https://github.com/dateutil/dateutil) - Apache License 2.0 / BSD License
+
+JavaScript/TypeScript Dependencies
+-----------------------------------
+- react (https://github.com/facebook/react) - MIT License
+- react-dom (https://github.com/facebook/react) - MIT License
+- react-router-dom (https://github.com/remix-run/react-router) - MIT License
+- antd (https://github.com/ant-design/ant-design) - MIT License
+- @ant-design/icons (https://github.com/ant-design/ant-design-icons) - MIT License
+- axios (https://github.com/axios/axios) - MIT License
+- recharts (https://github.com/recharts/recharts) - MIT License
+- lucide-react (https://github.com/lucide-icons/lucide) - ISC License
+- moment (https://github.com/moment/moment) - MIT License
+- react-dropzone (https://github.com/react-dropzone/react-dropzone) - MIT License
+- lodash (https://github.com/lodash/lodash) - MIT License
+- react-query (https://github.com/TanStack/query) - MIT License
+- typescript (https://github.com/microsoft/TypeScript) - Apache License 2.0
+
+Infrastructure Dependencies
+----------------------------
+- aws-cdk-lib (https://github.com/aws/aws-cdk) - Apache License 2.0
+- constructs (https://github.com/aws/constructs) - Apache License 2.0

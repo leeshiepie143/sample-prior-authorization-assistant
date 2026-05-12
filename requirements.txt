@@ -1,0 +1,33 @@
+# AWS SDK and Services
+boto3>=1.34.0
+botocore>=1.34.0
+
+# AWS CDK for Infrastructure
+aws-cdk-lib>=2.110.0
+constructs>=10.0.0,<11.0.0
+
+# Data Processing and Validation
+pydantic>=2.5.0
+dataclasses-json>=0.6.3
+
+# Testing Framework
+pytest>=7.4.3
+pytest-mock>=3.12.0
+moto>=4.2.14
+
+# Logging and Monitoring
+structlog>=23.2.0
+
+# Development Tools
+black>=23.11.0
+flake8>=6.1.0
+mypy>=1.7.1
+
+# Medical Code Validation
+python-dateutil>=2.8.2
+
+# PDF Processing
+pypdf>=6.10.2
+
+# Property-based Testing
+hypothesis>=6.92.0

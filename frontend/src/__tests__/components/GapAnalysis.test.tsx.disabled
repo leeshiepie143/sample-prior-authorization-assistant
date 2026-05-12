@@ -1,0 +1,502 @@
+import React from 'react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import EvidenceMapping from '../../components/GapAnalysis/EvidenceMapping';
+import GapAnalysisVisualization from '../../components/GapAnalysis/GapAnalysisVisualization';
+import ReportExporter from '../../components/GapAnalysis/ReportExporter';
+
+// Mock antd components
+jest.mock('antd', () => {
+  const React = require('react');
+  return {
+    ...jest.requireActual('antd'),
+    Card: ({ children, title, extra }: any) => (
+      <div data-testid="card">
+        {title && <h3>{title}</h3>}
+        {extra && <div data-testid="card-extra">{extra}</div>}
+        {children}
+      </div>
+    ),
+    Table: ({ columns, dataSource, loading }: any) => (
+      <div data-testid="table" data-loading={loading}>
+        {dataSource?.map((item: any, index: number) => (
+          <div key={index} data-testid={`table-row-${index}`}>
+            {JSON.stringify(item)}
+          </div>
+        ))}
+      </div>
+    ),
+    Tag: ({ children, color }: any) => (
+      <span data-testid="tag" data-color={color}>{children}</span>
+    ),
+    Progress: ({ percent, status }: any) => (
+      <div data-testid="progress" data-percent={percent} data-status={status}>
+        Progress: {percent}%
+      </div>
+    ),
+    Button: ({ children, onClick, loading, type }: any) => (
+      <button 
+        data-testid="button" 
+        onClick={onClick} 
+        disabled={loading}
+        data-type={type}
+      >
+        {loading ? 'Loading...' : children}
+      </button>
+    ),
+    Tooltip: ({ children, title }: any) => (
+      <div data-testid="tooltip" title={title}>{children}</div>
+    ),
+    Alert: ({ message, type, showIcon }: any) => (
+      <div data-testid={`alert-${type}`} data-show-icon={showIcon}>
+        {message}
+      </div>
+    ),
+    Spin: ({ children, spinning }: any) => (
+      <div data-testid="spin" data-spinning={spinning}>
+        {children}
+      </div>
+    ),
+    Typography: {
+      Title: ({ children, level }: any) => React.createElement(`h${level}`, {}, children),
+      Text: ({ children, type }: any) => <span data-type={type}>{children}</span>,
+      Paragraph: ({ children }: any) => <p>{children}</p>
+    }
+  };
+});
+
+// Mock Chart.js components
+jest.mock('react-chartjs-2', () => ({
+  Bar: ({ data, options }: any) => {
+    const React = require('react');
+    return (
+      <div data-testid="bar-chart" data-chart-data={JSON.stringify(data)}>
+        Bar Chart
+      </div>
+    );
+  },
+  Doughnut: ({ data, options }: any) => {
+    const React = require('react');
+    return (
+      <div data-testid="doughnut-chart" data-chart-data={JSON.stringify(data)}>
+        Doughnut Chart
+      </div>
+    );
+  }
+}));
+
+const renderWithQueryClient = (component: React.ReactElement) => {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: { retry: false },
+      mutations: { retry: false }
+    }
+  });
+
+  return render(
+    <QueryClientProvider client={queryClient}>
+      {component}
+    </QueryClientProvider>
+  );
+};
+
+// Sample test data
+const sampleEvidenceData = {
+  evidence_matches: [
+    {
+      evidence_text: "Patient has documented chest pain with exertion",
+      required_evidence: "Symptoms consistent with angina",
+      match_type: "exact_match",
+      confidence_score: 0.95,
+      source_section: "history_of_present_illness",
+      clinical_reasoning: "Clear documentation of anginal symptoms"
+    },
+    {
+      evidence_text: "Stress test shows ST depression 2.5mm",
+      required_evidence: "Abnormal stress test results",
+      match_type: "exact_match", 
+      confidence_score: 0.92,
+      source_section: "diagnostic_tests",
+      clinical_reasoning: "Significant ischemic changes on stress testing"
+    }
+  ],
+  coverage_percentage: 0.85,
+  missing_evidence: [
+    "Duration of optimal medical therapy not documented",
+    "Medication compliance records missing"
+  ]
+};
+
+const sampleGapAnalysisData = {
+  gaps_identified: [
+    {
+      gap_type: "missing_documentation",
+      description: "Stress test results not provided",
+      severity: "high",
+      criterion_affected: "cardiac_necessity_001",
+      impact_on_approval: "significant"
+    },
+    {
+      gap_type: "insufficient_evidence",
+      description: "Medication compliance not documented",
+      severity: "medium", 
+      criterion_affected: "medical_therapy_002",
+      impact_on_approval: "moderate"
+    }
+  ],
+  recommendations: [
+    {
+      action_type: "request_additional_info",
+      description: "Request complete stress test report",
+      priority: "high",
+      estimated_timeline: "2-3_days",
+      supporting_rationale: "Critical for approval decision"
+    }
+  ],
+  approval_likelihood: 0.65
+};
+
+const sampleAssessmentResults = {
+  document_id: "test-doc-123",
+  assessment_result: {
+    overall_compliance: "partially_compliant",
+    approval_likelihood: 0.65,
+    criteria_results: [
+      {
+        criterion_id: "cardiac_necessity_001",
+        status: "met",
+        confidence_score: 0.88,
+        supporting_evidence: ["Chest pain symptoms", "Abnormal stress test"],
+        clinical_rationale: "Strong evidence of cardiac necessity"
+      }
+    ]
+  },
+  gap_analysis: sampleGapAnalysisData,
+  evidence_mapping: sampleEvidenceData
+};
+
+describe('EvidenceMapping Component', () => {
+  test('renders evidence mapping table', () => {
+    renderWithQueryClient(
+      <EvidenceMapping evidenceData={sampleEvidenceData} />
+    );
+
+    expect(screen.getByText('Evidence Mapping')).toBeInTheDocument();
+    expect(screen.getByTestId('table')).toBeInTheDocument();
+  });
+
+  test('displays evidence matches correctly', () => {
+    renderWithQueryClient(
+      <EvidenceMapping evidenceData={sampleEvidenceData} />
+    );
+
+    expect(screen.getByText(/chest pain with exertion/i)).toBeInTheDocument();
+    expect(screen.getByText(/stress test shows ST depression/i)).toBeInTheDocument();
+  });
+
+  test('shows coverage percentage', () => {
+    renderWithQueryClient(
+      <EvidenceMapping evidenceData={sampleEvidenceData} />
+    );
+
+    expect(screen.getByTestId('progress')).toBeInTheDocument();
+    expect(screen.getByTestId('progress')).toHaveAttribute('data-percent', '85');
+  });
+
+  test('displays missing evidence', () => {
+    renderWithQueryClient(
+      <EvidenceMapping evidenceData={sampleEvidenceData} />
+    );
+
+    expect(screen.getByText(/Duration of optimal medical therapy/i)).toBeInTheDocument();
+    expect(screen.getByText(/Medication compliance records/i)).toBeInTheDocument();
+  });
+
+  test('handles empty evidence data', () => {
+    const emptyData = {
+      evidence_matches: [],
+      coverage_percentage: 0,
+      missing_evidence: []
+    };
+
+    renderWithQueryClient(
+      <EvidenceMapping evidenceData={emptyData} />
+    );
+
+    expect(screen.getByText(/No evidence matches found/i)).toBeInTheDocument();
+  });
+
+  test('shows confidence scores with appropriate colors', () => {
+    renderWithQueryClient(
+      <EvidenceMapping evidenceData={sampleEvidenceData} />
+    );
+
+    const tags = screen.getAllByTestId('tag');
+    expect(tags.length).toBeGreaterThan(0);
+    
+    // High confidence should be green
+    const highConfidenceTag = tags.find(tag => 
+      tag.textContent?.includes('95%') && tag.getAttribute('data-color') === 'green'
+    );
+    expect(highConfidenceTag).toBeInTheDocument();
+  });
+});
+
+describe('GapAnalysisVisualization Component', () => {
+  test('renders gap analysis visualization', () => {
+    renderWithQueryClient(
+      <GapAnalysisVisualization gapData={sampleGapAnalysisData} />
+    );
+
+    expect(screen.getByText('Gap Analysis')).toBeInTheDocument();
+    expect(screen.getByTestId('bar-chart')).toBeInTheDocument();
+  });
+
+  test('displays gaps by severity', () => {
+    renderWithQueryClient(
+      <GapAnalysisVisualization gapData={sampleGapAnalysisData} />
+    );
+
+    expect(screen.getByText(/high severity/i)).toBeInTheDocument();
+    expect(screen.getByText(/medium severity/i)).toBeInTheDocument();
+  });
+
+  test('shows approval likelihood', () => {
+    renderWithQueryClient(
+      <GapAnalysisVisualization gapData={sampleGapAnalysisData} />
+    );
+
+    expect(screen.getByText(/65%/)).toBeInTheDocument();
+    expect(screen.getByTestId('doughnut-chart')).toBeInTheDocument();
+  });
+
+  test('displays recommendations', () => {
+    renderWithQueryClient(
+      <GapAnalysisVisualization gapData={sampleGapAnalysisData} />
+    );
+
+    expect(screen.getByText(/Request complete stress test report/i)).toBeInTheDocument();
+    expect(screen.getByText(/2-3_days/i)).toBeInTheDocument();
+  });
+
+  test('handles empty gap data', () => {
+    const emptyGapData = {
+      gaps_identified: [],
+      recommendations: [],
+      approval_likelihood: 0
+    };
+
+    renderWithQueryClient(
+      <GapAnalysisVisualization gapData={emptyGapData} />
+    );
+
+    expect(screen.getByText(/No gaps identified/i)).toBeInTheDocument();
+  });
+
+  test('shows different severity levels with appropriate colors', () => {
+    renderWithQueryClient(
+      <GapAnalysisVisualization gapData={sampleGapAnalysisData} />
+    );
+
+    const severityTags = screen.getAllByTestId('tag');
+    const highSeverityTag = severityTags.find(tag => 
+      tag.textContent?.includes('high') && tag.getAttribute('data-color') === 'red'
+    );
+    const mediumSeverityTag = severityTags.find(tag => 
+      tag.textContent?.includes('medium') && tag.getAttribute('data-color') === 'orange'
+    );
+
+    expect(highSeverityTag).toBeInTheDocument();
+    expect(mediumSeverityTag).toBeInTheDocument();
+  });
+});
+
+describe('ReportExporter Component', () => {
+  test('renders export options', () => {
+    renderWithQueryClient(
+      <ReportExporter assessmentResults={sampleAssessmentResults} />
+    );
+
+    expect(screen.getByText('Export Report')).toBeInTheDocument();
+    expect(screen.getAllByTestId('button')).toHaveLength(3); // PDF, Excel, JSON
+  });
+
+  test('handles PDF export', async () => {
+    // Mock jsPDF
+    const mockJsPDF = {
+      text: jest.fn(),
+      addPage: jest.fn(),
+      save: jest.fn()
+    };
+    
+    jest.doMock('jspdf', () => ({
+      __esModule: true,
+      default: jest.fn(() => mockJsPDF)
+    }));
+
+    renderWithQueryClient(
+      <ReportExporter assessmentResults={sampleAssessmentResults} />
+    );
+
+    const pdfButton = screen.getByText('Export PDF');
+    await userEvent.click(pdfButton);
+
+    // Should show loading state
+    await waitFor(() => {
+      expect(screen.getByText('Loading...')).toBeInTheDocument();
+    });
+  });
+
+  test('handles Excel export', async () => {
+    // Mock xlsx
+    const mockXLSX = {
+      utils: {
+        json_to_sheet: jest.fn(() => ({})),
+        book_new: jest.fn(() => ({})),
+        book_append_sheet: jest.fn(),
+        sheet_to_json: jest.fn(() => [])
+      },
+      writeFile: jest.fn()
+    };
+
+    jest.doMock('xlsx', () => mockXLSX);
+
+    renderWithQueryClient(
+      <ReportExporter assessmentResults={sampleAssessmentResults} />
+    );
+
+    const excelButton = screen.getByText('Export Excel');
+    await userEvent.click(excelButton);
+
+    await waitFor(() => {
+      expect(screen.getByText('Loading...')).toBeInTheDocument();
+    });
+  });
+
+  test('handles JSON export', async () => {
+    // Mock URL.createObjectURL and document.createElement
+    const mockCreateObjectURL = jest.fn(() => 'blob:mock-url');
+    const mockClick = jest.fn();
+    const mockAppendChild = jest.fn();
+    const mockRemoveChild = jest.fn();
+
+    Object.defineProperty(URL, 'createObjectURL', {
+      value: mockCreateObjectURL
+    });
+
+    Object.defineProperty(document, 'createElement', {
+      value: jest.fn(() => ({
+        href: '',
+        download: '',
+        click: mockClick
+      }))
+    });
+
+    Object.defineProperty(document.body, 'appendChild', {
+      value: mockAppendChild
+    });
+
+    Object.defineProperty(document.body, 'removeChild', {
+      value: mockRemoveChild
+    });
+
+    renderWithQueryClient(
+      <ReportExporter assessmentResults={sampleAssessmentResults} />
+    );
+
+    const jsonButton = screen.getByText('Export JSON');
+    await userEvent.click(jsonButton);
+
+    await waitFor(() => {
+      expect(mockCreateObjectURL).toHaveBeenCalled();
+      expect(mockClick).toHaveBeenCalled();
+    });
+  });
+
+  test('shows export success message', async () => {
+    renderWithQueryClient(
+      <ReportExporter assessmentResults={sampleAssessmentResults} />
+    );
+
+    const jsonButton = screen.getByText('Export JSON');
+    await userEvent.click(jsonButton);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('alert-success')).toBeInTheDocument();
+      expect(screen.getByText(/Report exported successfully/i)).toBeInTheDocument();
+    });
+  });
+
+  test('handles export errors', async () => {
+    // Mock console.error to avoid test output noise
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+
+    // Mock URL.createObjectURL to throw error
+    Object.defineProperty(URL, 'createObjectURL', {
+      value: jest.fn(() => {
+        throw new Error('Export failed');
+      })
+    });
+
+    renderWithQueryClient(
+      <ReportExporter assessmentResults={sampleAssessmentResults} />
+    );
+
+    const jsonButton = screen.getByText('Export JSON');
+    await userEvent.click(jsonButton);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('alert-error')).toBeInTheDocument();
+      expect(screen.getByText(/Export failed/i)).toBeInTheDocument();
+    });
+
+    consoleSpy.mockRestore();
+  });
+
+  test('disables buttons during export', async () => {
+    renderWithQueryClient(
+      <ReportExporter assessmentResults={sampleAssessmentResults} />
+    );
+
+    const jsonButton = screen.getByText('Export JSON');
+    await userEvent.click(jsonButton);
+
+    // All buttons should be disabled during export
+    const buttons = screen.getAllByTestId('button');
+    buttons.forEach(button => {
+      expect(button).toBeDisabled();
+    });
+  });
+});
+
+describe('GapAnalysis Integration', () => {
+  test('renders complete gap analysis workflow', () => {
+    renderWithQueryClient(
+      <div>
+        <EvidenceMapping evidenceData={sampleEvidenceData} />
+        <GapAnalysisVisualization gapData={sampleGapAnalysisData} />
+        <ReportExporter assessmentResults={sampleAssessmentResults} />
+      </div>
+    );
+
+    expect(screen.getByText('Evidence Mapping')).toBeInTheDocument();
+    expect(screen.getByText('Gap Analysis')).toBeInTheDocument();
+    expect(screen.getByText('Export Report')).toBeInTheDocument();
+  });
+
+  test('handles data flow between components', () => {
+    renderWithQueryClient(
+      <div>
+        <EvidenceMapping evidenceData={sampleEvidenceData} />
+        <GapAnalysisVisualization gapData={sampleGapAnalysisData} />
+      </div>
+    );
+
+    // Evidence mapping should show coverage
+    expect(screen.getByTestId('progress')).toHaveAttribute('data-percent', '85');
+    
+    // Gap analysis should show approval likelihood
+    expect(screen.getByText(/65%/)).toBeInTheDocument();
+  });
+});
