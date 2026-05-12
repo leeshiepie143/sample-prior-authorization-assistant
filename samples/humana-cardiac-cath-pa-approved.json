@@ -1,0 +1,547 @@
+{
+  "resourceType": "Bundle",
+  "id": "humana-cardiac-cath-prior-auth-006",
+  "meta": {
+    "versionId": "1",
+    "lastUpdated": "2024-01-20T08:15:00Z",
+    "profile": [
+      "http://hl7.org/fhir/us/davinci-pas/StructureDefinition/profile-pas-request-bundle"
+    ]
+  },
+  "identifier": {
+    "system": "http://example.org/prior-auth-identifiers",
+    "value": "PA-HUM-CARD-2024-006"
+  },
+  "type": "collection",
+  "timestamp": "2024-01-20T08:15:00Z",
+  "entry": [
+    {
+      "fullUrl": "http://example.org/fhir/Claim/humana-cardiac-cath-claim-006",
+      "resource": {
+        "resourceType": "Claim",
+        "id": "humana-cardiac-cath-claim-006",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/us/davinci-pas/StructureDefinition/profile-claim"
+          ]
+        },
+        "status": "active",
+        "type": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/claim-type",
+              "code": "professional",
+              "display": "Professional"
+            }
+          ]
+        },
+        "use": "preauthorization",
+        "patient": {
+          "reference": "Patient/patient-006"
+        },
+        "created": "2024-01-20T08:15:00Z",
+        "insurer": {
+          "reference": "Organization/humana-insurance"
+        },
+        "provider": {
+          "reference": "Organization/cardiac-center-006"
+        },
+        "priority": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/processpriority",
+              "code": "urgent"
+            }
+          ]
+        },
+        "diagnosis": [
+          {
+            "sequence": 1,
+            "diagnosisCodeableConcept": {
+              "coding": [
+                {
+                  "system": "http://hl7.org/fhir/sid/icd-10-cm",
+                  "code": "I25.10",
+                  "display": "Atherosclerotic heart disease of native coronary artery without angina pectoris"
+                }
+              ]
+            }
+          },
+          {
+            "sequence": 2,
+            "diagnosisCodeableConcept": {
+              "coding": [
+                {
+                  "system": "http://hl7.org/fhir/sid/icd-10-cm",
+                  "code": "I20.9",
+                  "display": "Angina pectoris, unspecified"
+                }
+              ]
+            }
+          }
+        ],
+        "insurance": [
+          {
+            "sequence": 1,
+            "focal": true,
+            "coverage": {
+              "reference": "Coverage/humana-coverage-006"
+            }
+          }
+        ],
+        "item": [
+          {
+            "sequence": 1,
+            "category": {
+              "coding": [
+                {
+                  "system": "https://bluebutton.cms.gov/resources/variables/line_cms_type_srvc_cd",
+                  "code": "4",
+                  "display": "Diagnostic Radiology"
+                }
+              ]
+            },
+            "productOrService": {
+              "coding": [
+                {
+                  "system": "http://www.ama-assn.org/go/cpt",
+                  "code": "93458",
+                  "display": "Catheter placement in coronary artery(s) for coronary angiography, including intraprocedural injection(s) for coronary angiography, imaging supervision and interpretation; with left heart catheterization including intraprocedural injection(s) for left ventriculography, when performed"
+                }
+              ]
+            },
+            "servicedDate": "2024-01-28",
+            "locationCodeableConcept": {
+              "coding": [
+                {
+                  "system": "https://www.cms.gov/Medicare/Coding/place-of-service-codes/Place_of_Service_Code_Set",
+                  "code": "22",
+                  "display": "On Campus-Outpatient Hospital"
+                }
+              ]
+            },
+            "quantity": {
+              "value": 1
+            },
+            "unitPrice": {
+              "value": 12500.00,
+              "currency": "USD"
+            },
+            "net": {
+              "value": 12500.00,
+              "currency": "USD"
+            }
+          }
+        ]
+      }
+    },    {
+
+      "fullUrl": "http://example.org/fhir/Patient/patient-006",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "patient-006",
+        "identifier": [
+          {
+            "use": "usual",
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                  "code": "MR",
+                  "display": "Medical Record Number"
+                }
+              ]
+            },
+            "system": "http://example.org/medical-record-numbers",
+            "value": "MRN112233"
+          }
+        ],
+        "active": true,
+        "name": [
+          {
+            "use": "official",
+            "family": "Thompson",
+            "given": ["William", "Charles"]
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "555-234-5678",
+            "use": "home"
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1958-04-25",
+        "address": [
+          {
+            "use": "home",
+            "line": ["1122 Heart Lane"],
+            "city": "Atlanta",
+            "state": "GA",
+            "postalCode": "30309",
+            "country": "US"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "http://example.org/fhir/Organization/humana-insurance",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "humana-insurance",
+        "identifier": [
+          {
+            "use": "official",
+            "system": "http://www.cms.gov/Medicare/CMS-Forms/CMS-Forms/Downloads/CMS855I.pdf",
+            "value": "HUM001"
+          }
+        ],
+        "active": true,
+        "type": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+                "code": "ins",
+                "display": "Insurance Company"
+              }
+            ]
+          }
+        ],
+        "name": "Humana Inc.",
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "1-800-HUMANA1"
+          }
+        ],
+        "address": [
+          {
+            "line": ["500 West Main Street"],
+            "city": "Louisville",
+            "state": "KY",
+            "postalCode": "40202"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "http://example.org/fhir/Organization/cardiac-center-006",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "cardiac-center-006",
+        "identifier": [
+          {
+            "use": "official",
+            "system": "http://hl7.org/fhir/sid/us-npi",
+            "value": "1357924680"
+          }
+        ],
+        "active": true,
+        "type": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+                "code": "prov",
+                "display": "Healthcare Provider"
+              }
+            ]
+          }
+        ],
+        "name": "Atlanta Heart & Vascular Center",
+        "address": [
+          {
+            "line": ["2468 Cardiac Drive"],
+            "city": "Atlanta",
+            "state": "GA",
+            "postalCode": "30310"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "http://example.org/fhir/Coverage/humana-coverage-006",
+      "resource": {
+        "resourceType": "Coverage",
+        "id": "humana-coverage-006",
+        "status": "active",
+        "type": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+              "code": "EHCPOL",
+              "display": "extended healthcare"
+            }
+          ]
+        },
+        "subscriber": {
+          "reference": "Patient/patient-006"
+        },
+        "subscriberId": "HUM987654321B",
+        "beneficiary": {
+          "reference": "Patient/patient-006"
+        },
+        "relationship": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/subscriber-relationship",
+              "code": "self"
+            }
+          ]
+        },
+        "period": {
+          "start": "2024-01-01",
+          "end": "2024-12-31"
+        },
+        "payor": [
+          {
+            "reference": "Organization/humana-insurance"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "http://example.org/fhir/Condition/condition-006a",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "condition-006a",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/condition-category",
+                "code": "encounter-diagnosis",
+                "display": "Encounter Diagnosis"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://hl7.org/fhir/sid/icd-10-cm",
+              "code": "I25.10",
+              "display": "Atherosclerotic heart disease of native coronary artery without angina pectoris"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/patient-006"
+        },
+        "onsetDateTime": "2023-09-12"
+      }
+    },
+    {
+      "fullUrl": "http://example.org/fhir/ServiceRequest/service-request-006",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "service-request-006",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "103693007",
+                "display": "Diagnostic procedure"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "93458",
+              "display": "Catheter placement in coronary artery(s) for coronary angiography"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/patient-006"
+        },
+        "occurrenceDateTime": "2024-01-28",
+        "requester": {
+          "reference": "Practitioner/practitioner-006"
+        },
+        "reasonReference": [
+          {
+            "reference": "Condition/condition-006a"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "http://example.org/fhir/Practitioner/practitioner-006",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "practitioner-006",
+        "identifier": [
+          {
+            "use": "official",
+            "system": "http://hl7.org/fhir/sid/us-npi",
+            "value": "5566778899"
+          }
+        ],
+        "active": true,
+        "name": [
+          {
+            "use": "official",
+            "family": "Jackson",
+            "given": ["Michael", "Robert"],
+            "prefix": ["Dr."]
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "555-555-6677",
+            "use": "work"
+          }
+        ],
+        "qualification": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0360/2.7",
+                  "code": "MD",
+                  "display": "Doctor of Medicine"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "http://example.org/fhir/Encounter/encounter-006",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "encounter-006",
+        "status": "finished",
+        "class": {
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+          "code": "AMB",
+          "display": "ambulatory"
+        },
+        "type": [
+          {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "185349003",
+                "display": "Encounter for check up"
+              }
+            ]
+          }
+        ],
+        "subject": {
+          "reference": "Patient/patient-006"
+        },
+        "participant": [
+          {
+            "individual": {
+              "reference": "Practitioner/practitioner-006"
+            }
+          }
+        ],
+        "period": {
+          "start": "2024-01-20T08:00:00Z",
+          "end": "2024-01-20T09:00:00Z"
+        },
+        "reasonReference": [
+          {
+            "reference": "Condition/condition-006a"
+          }
+        ],
+        "serviceProvider": {
+          "reference": "Organization/cardiac-center-006"
+        }
+      }
+    },
+    {
+      "fullUrl": "http://example.org/fhir/DocumentReference/progress-note-006",
+      "resource": {
+        "resourceType": "DocumentReference",
+        "id": "progress-note-006",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-documentreference"
+          ]
+        },
+        "status": "current",
+        "type": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "11506-3",
+              "display": "Progress note"
+            }
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://hl7.org/fhir/us/core/CodeSystem/us-core-documentreference-category",
+                "code": "clinical-note",
+                "display": "Clinical Note"
+              }
+            ]
+          }
+        ],
+        "subject": {
+          "reference": "Patient/patient-006",
+          "display": "William Thompson"
+        },
+        "date": "2024-01-20T08:30:00Z",
+        "author": [
+          {
+            "reference": "Practitioner/practitioner-006",
+            "display": "Dr. Michael Jackson"
+          }
+        ],
+        "description": "Cardiology Progress Note - Cardiac Catheterization Prior Authorization",
+        "content": [
+          {
+            "attachment": {
+              "contentType": "text/plain",
+              "data": "Q2FyZGlvbG9neSBQcm9ncmVzcyBOb3RlCkRhdGU6IEphbnVhcnkgMjAsIDIwMjQKUGF0aWVudDogV2lsbGlhbSBUaG9tcHNvbiwgNjUteWVhci1vbGQgbWFsZQoKQ0hJRUYgQ09NUExBSU5UOgpDaGVzdCBwYWluIGFuZCBzaG9ydG5lc3Mgb2YgYnJlYXRoIG9uIGV4ZXJ0aW9uLCB3b3JzZW5pbmcgb3ZlciAzIG1vbnRocy4KCkhJU1RPUlkgT0YgUFJFU0VOVCBJTExORVNTOgpNci4gVGhvbXBzb24gcmVwb3J0cyBpbmNyZWFzaW5nIGNoZXN0IHBhaW4gd2l0aCBleGVydGlvbiBvdmVyIHRoZSBwYXN0IDMgbW9udGhzLiBQYWluIGlzIHN1YnN0ZXJuYWwsIHByZXNzdXJlLWxpa2UsIHJhZGlhdGVzIHRvIGxlZnQgYXJtLiBBc3NvY2lhdGVkIHdpdGggZHlzcG5lYSBhbmQgZGlhcGhvcmVzaXMuIFN5bXB0b21zIG9jY3VyIHdpdGggbWluaW1hbCBleGVydGlvbiAoMSBibG9jaykuIE5vIHJlc3QgcGFpbi4KClBBU1QgTUVESUNBTCBISVNUT1JZOgpIeXBlcnRlbnNpb24sIGR5c2xpcGlkZW1pYSwgZGlhYmV0ZXMgbWVsbGl0dXMgdHlwZSAyLCBmYW1pbHkgaGlzdG9yeSBvZiBDQUQuCgpQSFlTSUNBTCBFWEFNSU5BVElPTjoKVml0YWwgU2lnbnM6IEJQIDE1Mi85NCwgSFIgODgsIFRlbXAgOTguNMKwRiwgUmVzcCAxOCwgTzIgU2F0IDk3JQpHZW5lcmFsOiBNaWxkIGRpc3RyZXNzLCBhcHBlYXJzIGZhdGlndWVkCkNhcmRpYWM6IFJlZ3VsYXIgcmF0ZSBhbmQgcmh5dGhtLCBubyBtdXJtdXJzLCBnYWxsb3BzLCBvciBydWJzClB1bG1vbmFyeTogQ2xlYXIgdG8gYXVzY3VsdGF0aW9uIGJpbGF0ZXJhbGx5CkV4dHJlbWl0aWVzOiBObyBlZGVtYQoKRElBR05PU1RJQyBURVNUUzoKRUNHOiBTaW51cyByaXRobSwgVCB3YXZlIGZsYXR0ZW5pbmcgaW4gbGVhZHMgVjQtVjYKRWNob2NhcmRpb2dyYW06IEVGIDQ1JSwgcmVnaW9uYWwgd2FsbCBtb3Rpb24gYWJub3JtYWxpdGllcyBpbiBMQUQgdGVycml0b3J5ClN0cmVzcyBUZXN0OiBQb3NpdGl2ZSBmb3IgaXNjaGVtaWEgYXQgNzUlIG1heCBIUiwgU1QgZGVwcmVzc2lvbiAyLjVtbSBpbiBsZWFkcyBWNC1WNgoKQVNTRVNTTUVOVCBBTkQgUExBTjoKTXIuIFRob21wc29uIGhhcyBzdGFibGUgYW5naW5hIHdpdGggaGlnaCBwcmUtdGVzdCBwcm9iYWJpbGl0eSBvZiBzaWduaWZpY2FudCBDQUQuIFN0cmVzcyB0ZXN0IGlzIHBvc2l0aXZlIGZvciBpc2NoZW1pYSBpbiBMQUQgZGlzdHJpYnV0aW9uLiBFY2hvIHNob3dzIHJlZ2lvbmFsIHdhbGwgbW90aW9uIGFibm9ybWFsaXRpZXMgY29uc2lzdGVudCB3aXRoIENBRC4KCkluZGljYXRpb25zIGZvciBjYXJkaWFjIGNhdGhldGVyaXphdGlvbjoKMS4gU3RhYmxlIGFuZ2luYSB3aXRoIGhpZ2gtcmlzayBzdHJlc3MgdGVzdAoyLiBQb3NpdGl2ZSBzdHJlc3MgdGVzdCB3aXRoIFNUIGRlcHJlc3Npb24gPjJtbQozLiBSZWdpb25hbCB3YWxsIG1vdGlvbiBhYm5vcm1hbGl0aWVzIG9uIGVjaG8KNC4gU3ltcHRvbXMgbGltaXRpbmcgZGFpbHkgYWN0aXZpdGllcwo1LiBIaWdoIHByZS10ZXN0IHByb2JhYmlsaXR5IG9mIENBRCAoYWdlLCBnZW5kZXIsIHJpc2sgZmFjdG9ycykKClBhdGllbnQgY291bnNlbGVkIG9uIHJpc2tzIGFuZCBiZW5lZml0cyBvZiBjYXJkaWFjIGNhdGhldGVyaXphdGlvbi4gSGUgdW5kZXJzdGFuZHMgYW5kIGFncmVlcyB0byBwcm9jZWVkLgoKRHIuIE1pY2hhZWwgSmFja3NvbiwgTUQKQ2FyZGlvbG9neQ=="
+            }
+          }
+        ],
+        "context": {
+          "encounter": [
+            {
+              "reference": "Encounter/encounter-006"
+            }
+          ],
+          "period": {
+            "start": "2024-01-20T08:00:00Z",
+            "end": "2024-01-20T09:00:00Z"
+          }
+        }
+      }
+    }
+  ]
+}

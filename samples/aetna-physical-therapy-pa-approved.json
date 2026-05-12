@@ -1,0 +1,653 @@
+{
+  "resourceType": "Bundle",
+  "id": "aetna-pt-prior-auth-008",
+  "meta": {
+    "versionId": "1",
+    "lastUpdated": "2024-01-22T10:20:00Z",
+    "profile": [
+      "http://hl7.org/fhir/us/davinci-pas/StructureDefinition/profile-pas-request-bundle"
+    ]
+  },
+  "identifier": {
+    "system": "http://example.org/prior-auth-identifiers",
+    "value": "PA-AET-PT-2024-008"
+  },
+  "type": "collection",
+  "timestamp": "2024-01-22T10:20:00Z",
+  "entry": [
+    {
+      "fullUrl": "http://example.org/fhir/Claim/aetna-pt-claim-008",
+      "resource": {
+        "resourceType": "Claim",
+        "id": "aetna-pt-claim-008",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/us/davinci-pas/StructureDefinition/profile-claim"
+          ]
+        },
+        "status": "active",
+        "type": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/claim-type",
+              "code": "professional",
+              "display": "Professional"
+            }
+          ]
+        },
+        "use": "preauthorization",
+        "patient": {
+          "reference": "Patient/patient-008"
+        },
+        "created": "2024-01-22T10:20:00Z",
+        "insurer": {
+          "reference": "Organization/aetna-insurance"
+        },
+        "provider": {
+          "reference": "Organization/pt-clinic-008"
+        },
+        "priority": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/processpriority",
+              "code": "normal"
+            }
+          ]
+        },
+        "diagnosis": [
+          {
+            "sequence": 1,
+            "diagnosisCodeableConcept": {
+              "coding": [
+                {
+                  "system": "http://hl7.org/fhir/sid/icd-10-cm",
+                  "code": "M54.5",
+                  "display": "Low back pain"
+                }
+              ]
+            }
+          },
+          {
+            "sequence": 2,
+            "diagnosisCodeableConcept": {
+              "coding": [
+                {
+                  "system": "http://hl7.org/fhir/sid/icd-10-cm",
+                  "code": "M25.561",
+                  "display": "Pain in right knee"
+                }
+              ]
+            }
+          }
+        ],
+        "insurance": [
+          {
+            "sequence": 1,
+            "focal": true,
+            "coverage": {
+              "reference": "Coverage/aetna-coverage-008"
+            }
+          }
+        ],
+        "item": [
+          {
+            "sequence": 1,
+            "category": {
+              "coding": [
+                {
+                  "system": "https://bluebutton.cms.gov/resources/variables/line_cms_type_srvc_cd",
+                  "code": "1",
+                  "display": "Medical care"
+                }
+              ]
+            },
+            "productOrService": {
+              "coding": [
+                {
+                  "system": "http://www.ama-assn.org/go/cpt",
+                  "code": "97110",
+                  "display": "Therapeutic procedure, 1 or more areas, each 15 minutes; therapeutic exercises to develop strength and endurance, range of motion and flexibility"
+                }
+              ]
+            },
+            "servicedPeriod": {
+              "start": "2024-01-29",
+              "end": "2024-03-29"
+            },
+            "locationCodeableConcept": {
+              "coding": [
+                {
+                  "system": "https://www.cms.gov/Medicare/Coding/place-of-service-codes/Place_of_Service_Code_Set",
+                  "code": "11",
+                  "display": "Office"
+                }
+              ]
+            },
+            "quantity": {
+              "value": 24,
+              "unit": "sessions"
+            },
+            "unitPrice": {
+              "value": 85.00,
+              "currency": "USD"
+            },
+            "net": {
+              "value": 2040.00,
+              "currency": "USD"
+            }
+          },
+          {
+            "sequence": 2,
+            "category": {
+              "coding": [
+                {
+                  "system": "https://bluebutton.cms.gov/resources/variables/line_cms_type_srvc_cd",
+                  "code": "1",
+                  "display": "Medical care"
+                }
+              ]
+            },
+            "productOrService": {
+              "coding": [
+                {
+                  "system": "http://www.ama-assn.org/go/cpt",
+                  "code": "97140",
+                  "display": "Manual therapy techniques (eg, mobilization/manipulation, manual lymphatic drainage, manual traction), 1 or more regions, each 15 minutes"
+                }
+              ]
+            },
+            "servicedPeriod": {
+              "start": "2024-01-29",
+              "end": "2024-03-29"
+            },
+            "locationCodeableConcept": {
+              "coding": [
+                {
+                  "system": "https://www.cms.gov/Medicare/Coding/place-of-service-codes/Place_of_Service_Code_Set",
+                  "code": "11",
+                  "display": "Office"
+                }
+              ]
+            },
+            "quantity": {
+              "value": 12,
+              "unit": "sessions"
+            },
+            "unitPrice": {
+              "value": 95.00,
+              "currency": "USD"
+            },
+            "net": {
+              "value": 1140.00,
+              "currency": "USD"
+            }
+          }
+        ]
+      }
+    },    
+{
+      "fullUrl": "http://example.org/fhir/Patient/patient-008",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "patient-008",
+        "identifier": [
+          {
+            "use": "usual",
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                  "code": "MR",
+                  "display": "Medical Record Number"
+                }
+              ]
+            },
+            "system": "http://example.org/medical-record-numbers",
+            "value": "MRN778899"
+          }
+        ],
+        "active": true,
+        "name": [
+          {
+            "use": "official",
+            "family": "Brown",
+            "given": ["Christopher", "James"]
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "555-456-7890",
+            "use": "home"
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1990-06-18",
+        "address": [
+          {
+            "use": "home",
+            "line": ["7788 Therapy Lane"],
+            "city": "Denver",
+            "state": "CO",
+            "postalCode": "80201",
+            "country": "US"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "http://example.org/fhir/Organization/aetna-insurance",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "aetna-insurance",
+        "identifier": [
+          {
+            "use": "official",
+            "system": "http://www.cms.gov/Medicare/CMS-Forms/CMS-Forms/Downloads/CMS855I.pdf",
+            "value": "AET001"
+          }
+        ],
+        "active": true,
+        "type": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+                "code": "ins",
+                "display": "Insurance Company"
+              }
+            ]
+          }
+        ],
+        "name": "Aetna Better Health",
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "1-800-AETNA-1"
+          }
+        ],
+        "address": [
+          {
+            "line": ["151 Farmington Avenue"],
+            "city": "Hartford",
+            "state": "CT",
+            "postalCode": "06156"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "http://example.org/fhir/Organization/pt-clinic-008",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "pt-clinic-008",
+        "identifier": [
+          {
+            "use": "official",
+            "system": "http://hl7.org/fhir/sid/us-npi",
+            "value": "3579024681"
+          }
+        ],
+        "active": true,
+        "type": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+                "code": "prov",
+                "display": "Healthcare Provider"
+              }
+            ]
+          }
+        ],
+        "name": "Denver Physical Therapy & Rehabilitation",
+        "address": [
+          {
+            "line": ["9900 Recovery Road"],
+            "city": "Denver",
+            "state": "CO",
+            "postalCode": "80202"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "http://example.org/fhir/Coverage/aetna-coverage-008",
+      "resource": {
+        "resourceType": "Coverage",
+        "id": "aetna-coverage-008",
+        "status": "active",
+        "type": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+              "code": "EHCPOL",
+              "display": "extended healthcare"
+            }
+          ]
+        },
+        "subscriber": {
+          "reference": "Patient/patient-008"
+        },
+        "subscriberId": "AET456789012D",
+        "beneficiary": {
+          "reference": "Patient/patient-008"
+        },
+        "relationship": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/subscriber-relationship",
+              "code": "self"
+            }
+          ]
+        },
+        "period": {
+          "start": "2024-01-01",
+          "end": "2024-12-31"
+        },
+        "payor": [
+          {
+            "reference": "Organization/aetna-insurance"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "http://example.org/fhir/Condition/condition-008a",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "condition-008a",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/condition-category",
+                "code": "encounter-diagnosis",
+                "display": "Encounter Diagnosis"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://hl7.org/fhir/sid/icd-10-cm",
+              "code": "M54.5",
+              "display": "Low back pain"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/patient-008"
+        },
+        "onsetDateTime": "2023-10-15"
+      }
+    },
+    {
+      "fullUrl": "http://example.org/fhir/Condition/condition-008b",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "condition-008b",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/condition-category",
+                "code": "encounter-diagnosis",
+                "display": "Encounter Diagnosis"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://hl7.org/fhir/sid/icd-10-cm",
+              "code": "M25.561",
+              "display": "Pain in right knee"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/patient-008"
+        },
+        "onsetDateTime": "2023-11-20"
+      }
+    },
+    {
+      "fullUrl": "http://example.org/fhir/ServiceRequest/service-request-008",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "service-request-008",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "386053000",
+                "display": "Evaluation procedure"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "97110",
+              "display": "Therapeutic procedure, 1 or more areas, each 15 minutes; therapeutic exercises"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/patient-008"
+        },
+        "occurrencePeriod": {
+          "start": "2024-01-29",
+          "end": "2024-03-29"
+        },
+        "requester": {
+          "reference": "Practitioner/practitioner-008"
+        },
+        "reasonReference": [
+          {
+            "reference": "Condition/condition-008a"
+          },
+          {
+            "reference": "Condition/condition-008b"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "http://example.org/fhir/Practitioner/practitioner-008",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "practitioner-008",
+        "identifier": [
+          {
+            "use": "official",
+            "system": "http://hl7.org/fhir/sid/us-npi",
+            "value": "7788990011"
+          }
+        ],
+        "active": true,
+        "name": [
+          {
+            "use": "official",
+            "family": "Taylor",
+            "given": ["Rebecca", "Lynn"],
+            "prefix": ["Dr."]
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "555-777-8899",
+            "use": "work"
+          }
+        ],
+        "qualification": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0360/2.7",
+                  "code": "DPT",
+                  "display": "Doctor of Physical Therapy"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "http://example.org/fhir/Encounter/encounter-008",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "encounter-008",
+        "status": "finished",
+        "class": {
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+          "code": "AMB",
+          "display": "ambulatory"
+        },
+        "type": [
+          {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "185349003",
+                "display": "Encounter for check up"
+              }
+            ]
+          }
+        ],
+        "subject": {
+          "reference": "Patient/patient-008"
+        },
+        "participant": [
+          {
+            "individual": {
+              "reference": "Practitioner/practitioner-008"
+            }
+          }
+        ],
+        "period": {
+          "start": "2024-01-22T10:00:00Z",
+          "end": "2024-01-22T11:00:00Z"
+        },
+        "reasonReference": [
+          {
+            "reference": "Condition/condition-008a"
+          },
+          {
+            "reference": "Condition/condition-008b"
+          }
+        ],
+        "serviceProvider": {
+          "reference": "Organization/pt-clinic-008"
+        }
+      }
+    },
+    {
+      "fullUrl": "http://example.org/fhir/DocumentReference/progress-note-008",
+      "resource": {
+        "resourceType": "DocumentReference",
+        "id": "progress-note-008",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-documentreference"
+          ]
+        },
+        "status": "current",
+        "type": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "11506-3",
+              "display": "Progress note"
+            }
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://hl7.org/fhir/us/core/CodeSystem/us-core-documentreference-category",
+                "code": "clinical-note",
+                "display": "Clinical Note"
+              }
+            ]
+          }
+        ],
+        "subject": {
+          "reference": "Patient/patient-008",
+          "display": "Christopher Brown"
+        },
+        "date": "2024-01-22T10:30:00Z",
+        "author": [
+          {
+            "reference": "Practitioner/practitioner-008",
+            "display": "Dr. Rebecca Taylor"
+          }
+        ],
+        "description": "Physical Therapy Evaluation - Prior Authorization Request",
+        "content": [
+          {
+            "attachment": {
+              "contentType": "text/plain",
+              "data": "UGh5c2ljYWwgVGhlcmFweSBFdmFsdWF0aW9uCkRhdGU6IEphbnVhcnkgMjIsIDIwMjQKUGF0aWVudDogQ2hyaXN0b3BoZXIgQnJvd24sIDMzLXllYXItb2xkIG1hbGUKCkNISUVGIENPTVBMQUlOVDoKTG93IGJhY2sgcGFpbiBhbmQgcmlnaHQga25lZSBwYWluIGZvciAzIG1vbnRocywgbGltaXRpbmcgd29yayBhbmQgZGFpbHkgYWN0aXZpdGllcy4KCkhJU1RPUlkgT0YgUFJFU0VOVCBJTExORVNTOgpNci4gQnJvd24gZGV2ZWxvcGVkIGxvdyBiYWNrIHBhaW4gMyBtb250aHMgYWdvIGFmdGVyIGxpZnRpbmcgaGVhdnkgYm94ZXMgYXQgd29yay4gUGFpbiBpcyBsb2NhdGVkIGluIHRoZSBsdW1iYXIgcmVnaW9uLCByYWRpYXRlcyB0byByaWdodCBsZWcsIGFuZCBpcyB3b3JzZSB3aXRoIHNpdHRpbmcgYW5kIGJlbmRpbmcuIFJpZ2h0IGtuZWUgcGFpbiBkZXZlbG9wZWQgMSBtb250aCBsYXRlciwgcG9zc2libHkgZHVlIHRvIGNvbXBlbnNhdG9yeSBnYWl0IGNoYW5nZXMuCgpDT05TRVJWQVRJVKUGUFJFQVRNRU5UIEFUVEVNUFRFRDoKMS4gUmVzdCBhbmQgYWN0aXZpdHkgbW9kaWZpY2F0aW9uIC0gNiB3ZWVrcwoyLiBOU0FJRHMgKGlidXByb2ZlbikgLSA4IHdlZWtzCjMuIE11c2NsZSByZWxheGFudHMgKGN5Y2xvYmVuemFwcmluZSkgLSA0IHdlZWtzCjQuIEhvbWUgZXhlcmNpc2UgcHJvZ3JhbSAtIDQgd2Vla3MgKGxpbWl0ZWQgY29tcGxpYW5jZSkKNS4gSGVhdCBhbmQgaWNlIHRoZXJhcHkgLSBvbmdvaW5nCjYuIEVyZ29ub21pYyBhc3Nlc3NtZW50IGF0IHdvcmsgLSBjb21wbGV0ZWQKCkZVTkNUSU9OQUwgQVNTRVNTTUVOVDoKT3NXZXN0cnkgRGlzYWJpbGl0eSBJbmRleDogNDIlIChtb2RlcmF0ZSBkaXNhYmlsaXR5KQpOdW1lcmljIFBhaW4gUmF0aW5nIFNjYWxlOiA3LzEwIChsb3cgYmFjayksIDUvMTAgKGtuZWUpCkZlYXIgQXZvaWRhbmNlIEJlbGllZnMgUXVlc3Rpb25uYWlyZTogMjgvNjYgKGhpZ2ggZmVhciBhdm9pZGFuY2UpCgpQSFlTSUNBTCBFWEFNSU5BVElPTjoKUG9zdHVyZTogQW50ZXJpb3IgaGVhZCBwb3N0dXJlLCBpbmNyZWFzZWQgbHVtYmFyIGxvcmRvc2lzCkx1bWJhciBTcGluZTogTGltaXRlZCBmbGV4aW9uICg2MCBkZWdyZWVzKSwgcGFpbmZ1bCBleHRlbnNpb24KUmlnaHQgS25lZTogTWlsZCBzd2VsbGluZywgbGltaXRlZCBmbGV4aW9uICgxMTAgZGVncmVlcyksIHBvc2l0aXZlIHBhdGVsbGFyIGNvbXByZXNzaW9uIHRlc3QKU3RyZW5ndGg6IEhpcCBhYmR1Y3RvcnMgNC81LCBnbHV0ZXVzIG1heGltdXMgNC81LCBxdWFkcmljZXBzIDQvNQpCYWxhbmNlOiBTaW5nbGUgbGVnIHN0YW5jZSA8IDEwIHNlY29uZHMgYmlsYXRlcmFsbHkKCklNQUdJTkc6Ckx1bWJhciBYLXJheTogTWlsZCBkaXNjIHNwYWNlIG5hcnJvd2luZyBMNC1MNSwgbm8gZnJhY3R1cmUKS25lZSBYLXJheTogTm9ybWFsIGJvbmUgc3RydWN0dXJlcywgbWlsZCBqb2ludCBzcGFjZSBuYXJyb3dpbmcKCkFTU0VTU01FTlQgQU5EIFBMQU46Ck1yLiBCcm93biBoYXMgbWVjaGFuaWNhbCBsb3cgYmFjayBwYWluIHdpdGggc2Vjb25kYXJ5IGtuZWUgcGFpbiBkdWUgdG8gY29tcGVuc2F0b3J5IG1vdmVtZW50IHBhdHRlcm5zLiBIZSBoYXMgc2lnbmlmaWNhbnQgZnVuY3Rpb25hbCBsaW1pdGF0aW9ucyBhbmQgaGFzIG5vdCByZXNwb25kZWQgYWRlcXVhdGVseSB0byBjb25zZXJ2YXRpdmUgdHJlYXRtZW50LgoKSW5kaWNhdGlvbnMgZm9yIHBoeXNpY2FsIHRoZXJhcHk6CjEuIE1vZGVyYXRlIGZ1bmN0aW9uYWwgZGlzYWJpbGl0eSAoT0RXSSA0MiUpCjIuIEZhaWxlZCBjb25zZXJ2YXRpdmUgdHJlYXRtZW50IGZvciAzIG1vbnRocwozLiBTaWduaWZpY2FudCBzdHJlbmd0aCBhbmQgbW9iaWxpdHkgZGVmaWNpdHMKNC4gSGlnaCBmZWFyIGF2b2lkYW5jZSBiZWhhdmlvcnMKNS4gV29yay1yZWxhdGVkIGZ1bmN0aW9uYWwgbGltaXRhdGlvbnMKNi4gUG90ZW50aWFsIGZvciBmdW5jdGlvbmFsIGltcHJvdmVtZW50IHdpdGggc3BlY2lhbGl6ZWQgY2FyZQoKVHJlYXRtZW50IFBsYW46CjEuIE1hbnVhbCB0aGVyYXB5IGZvciBqb2ludCBtb2JpbGl0eQoyLiBUaGVyYXBldXRpYyBleGVyY2lzZSBmb3Igc3RyZW5ndGggYW5kIHN0YWJpbGl0eQozLiBQb3N0dXJhbCByZS1lZHVjYXRpb24KNC4gRXJnb25vbWljIHRyYWluaW5nCjUuIFBhaW4gZWR1Y2F0aW9uIGFuZCBjb3Bpbmcgc3RyYXRlZ2llcwo2LiBHcmFkdWFsIHJldHVybiB0byBmdW5jdGlvbmFsIGFjdGl2aXRpZXMKCkV4cGVjdGVkIGZyZXF1ZW5jeTogMy00eCBwZXIgd2VlayBmb3IgOCB3ZWVrcyAoMjQgc2Vzc2lvbnMpCkV4cGVjdGVkIG91dGNvbWVzOiA1MC0yNSUgaW1wcm92ZW1lbnQgaW4gT0RXSSwgcmV0dXJuIHRvIGZ1bGwgd29yayBkdXRpZXMKClBhdGllbnQgY291bnNlbGVkIG9uIHRyZWF0bWVudCBwbGFuIGFuZCBnb2Fscy4gSGUgdW5kZXJzdGFuZHMgYW5kIGFncmVlcyB0byBwcm9jZWVkLgoKRHIuIFJlYmVjY2EgVGF5bG9yLCBEUFQKUGh5c2ljYWwgVGhlcmFweQ=="
+            }
+          }
+        ],
+        "context": {
+          "encounter": [
+            {
+              "reference": "Encounter/encounter-008"
+            }
+          ],
+          "period": {
+            "start": "2024-01-22T10:00:00Z",
+            "end": "2024-01-22T11:00:00Z"
+          }
+        }
+      }
+    }
+  ]
+}
