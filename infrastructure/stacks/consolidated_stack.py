@@ -177,7 +177,7 @@ class ConsolidatedStack(Stack):
                         # Bedrock permissions - Specific models and Knowledge Base access
                         iam.PolicyStatement(
                             effect=iam.Effect.ALLOW,
-                            actions=["bedrock:InvokeModel"],
+                            actions=["bedrock:GetInferenceProfile", "bedrock:InvokeModel"],
                             resources=[
                                 "arn:aws:bedrock:*::foundation-model/amazon.titan-embed-text-v1",
                                 "arn:aws:bedrock:*::foundation-model/amazon.titan-embed-text-v2:0",
